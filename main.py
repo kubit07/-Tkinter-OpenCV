@@ -11,7 +11,7 @@ if not os.path.exists(path):
     os.makedirs(path)
 
 # create a dictionary for the filters
-fil = ['color', 'gray', 'threshold', 'increaseContrast', 'decreaseContrast', 'logTransformation', 'powerLowEnhancement',
+fil = ['rotate_left','rotate_right','increaseBrightness','decreaseBrightness','color', 'gray', 'threshold', 'increaseContrast', 'decreaseContrast', 'logTransformation', 'powerLowEnhancement',
        'negativeEnhancement', 'gauss', 'sobel', 'laplace', 'min', 'max', 'median', 'average', 'unsharp', 'prewitt',
        'histogramEqualization']
 filter_dic = {}
@@ -37,7 +37,7 @@ class App:
         label1 = tkinter.Label(window, text="Filters")
         label1.grid(row=3, column=13, columnspan=5)
 
-        self.canvas = tkinter.Canvas(self.window, width=300, height=300)
+        self.canvas = tkinter.Canvas(self.window, width=400, height=400)
         self.canvas.grid(row=0, column=1, rowspan=15, columnspan=5)
 
         # button of choose
@@ -45,42 +45,54 @@ class App:
         self.b_snap.grid(row=3, column=3)
 
         # Button for applying the other filters!
+        self.b19 = tkinter.Button(window, text="rotate image left", width=15, command=self.rotate_image_left_filter)
+        self.b19.grid(row=4, column=13)
+
+        self.b20 = tkinter.Button(window, text="rotate image right", command=self.rotate_image_right_filter)
+        self.b20.grid(row=4, column=17)
+
         self.b1 = tkinter.Button(window, text="Increase Contrast", width=15, command=self.increaseContrast_filter)
-        self.b1.grid(row=4, column=13)
+        self.b1.grid(row=5, column=13)
 
         self.b2 = tkinter.Button(window, text="Decrease Contrast", width=15, command=self.decreaseContrast_filter)
-        self.b2.grid(row=4, column=17)
+        self.b2.grid(row=5, column=17)
+
+        self.b1 = tkinter.Button(window, text="increase Brightness", width=15, command=self.increaseBrightness_filter)
+        self.b1.grid(row=6, column=13)
+
+        self.b2 = tkinter.Button(window, text="Decrease Brightness", width=15, command=self.decreaseBrightness_filter)
+        self.b2.grid(row=6, column=17)
 
         self.b3 = tkinter.Button(window, text="Gauss", width=15, command=self.gauss_filter)
-        self.b3.grid(row=5, column=13)
+        self.b3.grid(row=7, column=13)
 
         self.b4 = tkinter.Button(window, text="Laplace", width=15, command=self.laplace_filter)
-        self.b4.grid(row=5, column=17)
+        self.b4.grid(row=7, column=17)
 
         self.b5 = tkinter.Button(window, text="Threshold", width=15, command=self.threshold_filter)
-        self.b5.grid(row=6, column=17)
+        self.b5.grid(row=8, column=17)
 
         # note, add sobel filters to the same button, multiple clicks
         self.b6 = tkinter.Button(window, text="Sobel", width=15, command=self.sobel_filter)
-        self.b6.grid(row=6, column=13)
+        self.b6.grid(row=8, column=13)
 
         self.b7 = tkinter.Button(window, text="Gray", width=15, command=self.gray_filter)
-        self.b7.grid(row=8, column=13)
+        self.b7.grid(row=9, column=13)
 
         self.b8 = tkinter.Button(window, text="Median", width=15, command=self.median_filter)
-        self.b8.grid(row=8, column=17)
+        self.b8.grid(row=9, column=17)
 
         self.b9 = tkinter.Button(window, text="Average", width=15, command=self.average_filter)
-        self.b9.grid(row=9, column=13)
+        self.b9.grid(row=10, column=13)
 
         self.b10 = tkinter.Button(window, text="Color/No Filter", width=15, command=self.no_filter)
-        self.b10.grid(row=9, column=17)
+        self.b10.grid(row=10, column=17)
 
         self.b11 = tkinter.Button(window, text="Unsharp", width=15, command=self.unsharp_filter)
         self.b11.grid(row=13, column=13)
 
         self.b12 = tkinter.Button(window, text="LogTrans...", width=15, command=self.logTransformation)
-        self.b12.grid(row=10, column=17)
+        self.b12.grid(row=16, column=17)
 
         self.b13 = tkinter.Button(window, text="NegativeEnhanc...", width=15, command=self.negativeEnhancement)
         self.b13.grid(row=11, column=13)
@@ -98,7 +110,7 @@ class App:
         self.b17.grid(row=13, column=17, columnspan=2)
 
         self.b18 = tkinter.Button(window, text="Power Low 0.5g", width=15, command=self.powerLowEnhancement)
-        self.b18.grid(row=10, column=13, columnspan=2)
+        self.b18.grid(row=16, column=13, columnspan=2)
 
         self.b19 = tkinter.Button(window, text="Save image", width=15, command=self.save_image)
         self.b19.grid(row=15, rowspan=2, column=13, columnspan=4)
@@ -124,6 +136,26 @@ class App:
             print('Image saved!')
 
     # all filters
+    def rotate_image_left_filter(self):
+         if self.isImageInstantiated:
+            self.img.all_filters = select_filter('rotate_left', True)
+            self.img.update()
+
+    def rotate_image_right_filter(self):
+         if self.isImageInstantiated:
+            self.img.all_filters = select_filter('rotate_right', True)
+            self.img.update()
+
+    def increaseBrightness_filter(self):
+        if self.isImageInstantiated:
+            self.img.all_filters = select_filter('increaseBrightness', True)
+            self.img.update()
+    
+    def decreaseBrightness_filter(self):
+        if self.isImageInstantiated:
+            self.img.all_filters = select_filter('decreaseBrightness', True)
+            self.img.update()
+
     def gray_filter(self):
         if self.isImageInstantiated:
             self.img.all_filters = select_filter('gray', True)

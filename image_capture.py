@@ -21,6 +21,14 @@ class ImageCap:
             self.panelA = None
             self.panelB = None
 
+            # rotate
+            self.rotate_right = np.array([])
+            self.rotate_left = np.array([])
+
+            # brightness
+            self.brightness = 0
+            self.brightness_image = np.array([])
+
             # initialize the filters
             self.all_filters = None
 
@@ -62,6 +70,48 @@ class ImageCap:
         if hasattr(self, 'original_image'):
             gray = cv2.cvtColor(self.original_image, cv2.COLOR_BGR2GRAY)
 
+            if self.all_filters['rotate_left']:
+                if self.rotate_left.any() : 
+                    self.filtered_image = cv2.rotate(self.rotate_left, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                    self.rotate_left = self.filtered_image
+                    self.update_panel(self.original_image, self.filtered_image)
+                else : 
+                    self.filtered_image = cv2.rotate(self.original_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                    self.rotate_left = self.filtered_image
+                    self.update_panel(self.original_image, self.filtered_image)
+
+            if self.all_filters['rotate_right']:
+                if self.rotate_right.any() : 
+                    self.filtered_image = cv2.rotate(self.rotate_right, cv2.ROTATE_90_CLOCKWISE)
+                    self.rotate_right = self.filtered_image
+                    self.update_panel(self.original_image, self.filtered_image)
+                else : 
+                    self.filtered_image = cv2.rotate(self.original_image, cv2.ROTATE_90_CLOCKWISE)
+                    self.rotate_right = self.filtered_image
+                    self.update_panel(self.original_image, self.filtered_image)
+
+            if self.all_filters['increaseBrightness']:
+                if self.brightness_image.any() : 
+                    self.brightness += 10
+                    self.filtered_image = cv2.convertScaleAbs(self.brightness_image, beta=self.brightness)
+                    self.update_panel(self.original_image, self.filtered_image)
+                else : 
+                    self.brightness = 20
+                    self.filtered_image = cv2.convertScaleAbs(self.original_image, beta=self.brightness)
+                    self.brightness_image = self.filtered_image
+                    self.update_panel(self.original_image, self.filtered_image)
+
+            if self.all_filters['decreaseBrightness']:
+                if self.brightness_image.any() : 
+                    self.brightness -= 10
+                    self.filtered_image = cv2.convertScaleAbs(self.brightness_image, beta=self.brightness)
+                    self.update_panel(self.original_image, self.filtered_image)
+                else : 
+                    self.brightness = -20
+                    self.filtered_image = cv2.convertScaleAbs(self.original_image, beta=self.brightness)
+                    self.brightness_image = self.filtered_image
+                    self.update_panel(self.original_image, self.filtered_image)
+                
             if self.all_filters['color']:
                 self.update_panel(self.original_image, self.original_image)
 
