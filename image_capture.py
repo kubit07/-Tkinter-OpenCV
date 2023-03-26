@@ -29,6 +29,14 @@ class ImageCap:
             self.brightness = 0
             self.brightness_image = np.array([])
 
+            # resize
+            self.scale_percent = 0.0
+            self.resize_image = np.array([])
+
+            # crop
+            self.crop = 0.0
+            self.crop_image = np.array([])
+
             # initialize the filters
             self.all_filters = None
 
@@ -111,7 +119,51 @@ class ImageCap:
                     self.filtered_image = cv2.convertScaleAbs(self.original_image, beta=self.brightness)
                     self.brightness_image = self.filtered_image
                     self.update_panel(self.original_image, self.filtered_image)
+
+            if self.all_filters['resize']:
+                if self.resize_image.any() : 
+                    self.scale_percent += 1.5
+                    width = int(self.original_image.shape[1] // self.scale_percent)
+                    height = int(self.original_image.shape[0] // self.scale_percent)
+                    dim = (width, height)
+                    # resize image
+                    self.resize_image = cv2.resize(self.original_image, dim, interpolation = cv2.INTER_AREA)
+                    self.filtered_image = self.resize_image
+                    self.update_panel(self.original_image, self.filtered_image)
+                else : 
+                    self.scale_percent += 1.5
+                    width = int(self.original_image.shape[1] // self.scale_percent)
+                    height = int(self.original_image.shape[0] // self.scale_percent)
+                    dim = (width, height)
+                    # resize image
+                    self.resize_image = cv2.resize(self.original_image, dim, interpolation = cv2.INTER_AREA)
+                    self.filtered_image = self.resize_image
+                    self.update_panel(self.original_image, self.filtered_image)
+
                 
+            if self.all_filters['crop']:
+                if self.resize_image.any() : 
+                    self.scale_percent += 1.5
+                    width = int(self.original_image.shape[1] // self.scale_percent)
+                    height = int(self.original_image.shape[0] // self.scale_percent)
+                    dim = (width, height)
+                    # resize image
+                    self.resize_image = cv2.resize(self.original_image, dim, interpolation = cv2.INTER_AREA)
+                    self.filtered_image = self.resize_image
+                    self.update_panel(self.original_image, self.filtered_image)
+                else : 
+                    self.scale_percent += 1.5
+                    width = int(self.original_image.shape[1] // self.scale_percent)
+                    height = int(self.original_image.shape[0] // self.scale_percent)
+                    dim = (width, height)
+                    # resize image
+                    self.resize_image = cv2.resize(self.original_image, dim, interpolation = cv2.INTER_AREA)
+                    self.filtered_image = self.resize_image
+                    self.update_panel(self.original_image, self.filtered_image)
+
+
+
+      
             if self.all_filters['color']:
                 self.update_panel(self.original_image, self.original_image)
 
