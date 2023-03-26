@@ -140,29 +140,23 @@ class ImageCap:
                     self.filtered_image = self.resize_image
                     self.update_panel(self.original_image, self.filtered_image)
 
-                
             if self.all_filters['crop']:
-                if self.resize_image.any() : 
-                    self.scale_percent += 1.5
-                    width = int(self.original_image.shape[1] // self.scale_percent)
-                    height = int(self.original_image.shape[0] // self.scale_percent)
-                    dim = (width, height)
-                    # resize image
-                    self.resize_image = cv2.resize(self.original_image, dim, interpolation = cv2.INTER_AREA)
-                    self.filtered_image = self.resize_image
+                if self.crop_image.any() : 
+                    self.crop += 1.2
+                    width = int(self.original_image.shape[1] // self.crop)
+                    height = int(self.original_image.shape[0] // self.crop)
+                    # cropped image
+                    self.crop_image = self.original_image[0:height+1,0:width+1]
+                    self.filtered_image = self.crop_image 
                     self.update_panel(self.original_image, self.filtered_image)
                 else : 
-                    self.scale_percent += 1.5
-                    width = int(self.original_image.shape[1] // self.scale_percent)
-                    height = int(self.original_image.shape[0] // self.scale_percent)
-                    dim = (width, height)
-                    # resize image
-                    self.resize_image = cv2.resize(self.original_image, dim, interpolation = cv2.INTER_AREA)
-                    self.filtered_image = self.resize_image
+                    self.crop += 1.2
+                    width = int(self.original_image.shape[1] // self.crop)
+                    height = int(self.original_image.shape[0] // self.crop)
+                    # cropped image
+                    self.crop_image = self.original_image[0:height+1,0:width+1]
+                    self.filtered_image = self.crop_image 
                     self.update_panel(self.original_image, self.filtered_image)
-
-
-
       
             if self.all_filters['color']:
                 self.update_panel(self.original_image, self.original_image)
